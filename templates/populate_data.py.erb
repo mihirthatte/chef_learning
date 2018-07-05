@@ -1,0 +1,36 @@
+import requests
+import json
+from elasticsearch import Elasticsearch, helpers
+
+request_body = {"settings" : {"number_of_shards": 1,"number_of_replicas": 0}}
+
+es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+
+es.indices.create(index='test_es', body = request_body, ignore=400)
+
+URL = "https://randomuser.me/api/"
+
+data =[]
+for i in range(10):
+        r = requests.get(url = URL).json()
+        """
+        print r["results"][0]["name"]["first"], " ",r["results"][0]["name"]["last"]
+        print r["results"][0]["location"]["city"]
+        print r["results"][0]["dob"]["date"]
+        print r["results"][0]["phone"]
+
+        print "___________________________________"
+        """
+
+        record = {"first_name":r["results"][0]["name"]["first"], \
+                 "last_name":r["results"][0]["name"]["last"],\
+                 "date_of_birth":r["results"][0]["dob"]["date"],\
+                 "location":r["results"][0]["location"]["city"]}
+        print "json doc - "
+        print record
+
+
+        data.append(record)
+
+res = es.bulk(index = "test_es", body = json.loads(data), refresh = True)
+              
