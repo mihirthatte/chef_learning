@@ -22,15 +22,16 @@ for i in range(10):
         print "___________________________________"
         """
 
-        record = {"first_name":r["results"][0]["name"]["first"], \
+        record = {"_index":"test_es", "_type": "users", "_id":i,\
+                "_source":{"first_name":r["results"][0]["name"]["first"], \
                  "last_name":r["results"][0]["name"]["last"],\
                  "date_of_birth":r["results"][0]["dob"]["date"],\
-                 "location":r["results"][0]["location"]["city"]}
+                 "location":r["results"][0]["location"]["city"]}}
         print "json doc - "
         print record
 
 
         data.append(record)
 
-res = es.bulk(index = "test_es", body = json.loads(data), refresh = True)
-              
+helpers.bulk(es, data)
+             
