@@ -9,7 +9,7 @@
 directory '/var/tmp/generator' do
 	owner 'vagrant'
 	group 'vagrant'
-	mode '755'
+	mode '0755'
 	action :create
 end
 
@@ -64,6 +64,7 @@ execute 'install pip packages' do
 	command 'pip install requests'
 end
 
+#Creating a cron job to invoke the script every 5 hours
 cron 'python script' do
 	hour '5'
 	minute '0'

@@ -30,9 +30,9 @@ describe package('java-1.8.0-openjdk-devel') do
   it { should be_installed }
 end
 
-describe package('python-pip') do
-  it { should be_installed }
-end
+#describe package('python-pip') do
+#  it { should be_installed }
+#end
 
 describe package('epel-release') do
   it { should be_installed }
