@@ -13,47 +13,43 @@ directory '/var/tmp/generator' do
 	action :create
 end
 
-#Installing httpd, python-pip, java sdk, and elasticsearch = 
-package 'httpd'
-
-package 'epel-release'
+#Installing httpd, and java-1.8-sdk -
+package ['httpd', 'epel-release', 'java-1.8.0-openjdk-devel'] do
+	action :install
+end
 
 package 'python-pip'
 
-package 'java-1.8.0-openjdk-devel'
-
+#Installing Elasticsearch - 
 template '/etc/yum.repos.d/elasticsearch.repo' do
         source 'elasticsearch.repo.erb'
 end
-
 package 'elasticsearch'
 
 
-#Starting httpd and elasticsearch services
-service 'httpd' do
-	action [:enable, :start]
+#Enabling services - 
+services = ['httpd', 'elasticsearch']
+for every_service in services
+	service every_service do
+		action [:enable, :start]
+	end
 end
 
-service 'elasticsearch' do
-	action :enable
-	action :start
-end
-
+#Placing template files - 
 
 template '/var/www/html/index.html' do
         source 'index.html.erb'
-	mode '0755'
-	owner 'vagrant'
-	group 'vagrant'
+        mode   '0755'
+        owner  'vagrant'
+        group  'vagrant'
 end
 
 template '/var/tmp/generator/populate_data.py' do
         source 'populate_data.py.erb'
-	mode '0755'
-	owner 'vagrant'
-	group 'vagrant'
+	mode   '0755'
+	owner  'vagrant'
+	group  'vagrant'
 end
-
 
 #Installing python modules - elasticsearch and request
 execute 'install pip packages' do
@@ -70,8 +66,3 @@ cron 'python script' do
 	minute '0'
 	command 'python /var/tmp/generator/populate_data.py'
 end
-
-#Running the pythpn script - 
-#execute 'Run python script' do
-#	command 'python /var/tmp/generator/populate_data.py'
-#end
