@@ -2,7 +2,7 @@
 
 This recipe runs a python script which generates random user information and inserts it into an Elasticsearch instance.
 
-##Buiold - 
+## Build - 
 Run ```kitchen converge``` to apply the confiuration.
 
 Run ```kitchen exec -c 'python /var/tmp/generator/populate_data.py' ``` to generate random user information.
@@ -16,6 +16,6 @@ Check if the data has been correctly populated to Elasticsearch index - `test/es
 curl -XGET "localhost:9200/test_es/users/_search?pretty=true" -H 'Content-Type: application/json' -d'{"query": {"match_all": {}}}'
 ```
 
-##Verify - 
+## Verify - 
 
 Use ```kitchen verify``` to run inspec tests
