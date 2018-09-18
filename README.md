@@ -1,4 +1,3 @@
-b1 branch
 ## Generates Random User Data
 
 This recipe runs a python script which generates random user information and inserts it into an Elasticsearch instance.
